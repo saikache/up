@@ -1,0 +1,69 @@
+<form id="contact-form" method="post" action="/home/send_data">
+    <div class="errors"></div>
+    <div class="controls">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="form_name">Name *</label>
+                    <input id="form_name" type="text" name="fname" class="form-control" placeholder="Please enter your firstname *" required="required" data-error="Name is required.">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="form_email">Email *</label>
+                    <input id="form_email" type="email" name="email" class="form-control" placeholder="Please enter your email *" required="required" data-error="Valid email is required.">
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <input type="hidden" name="fromContact" value="Contact Us">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="form_message">Message *</label>
+                    <textarea id="form_message" name="message" class="form-control" placeholder="Message for me *" rows="4" required="required" data-error="Please,leave us a message."></textarea>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <h5 style="color: red">Where should this mail go => </h5> <input type="email" name="toEmail" size="35" >or it will goes somewhere
+            <div class="col-md-12">
+            <br>
+                <input type="submit" class="btn btn-success btn-send" value="Send message" id="contactForm">
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+$("#contactForm").click(function(e) {
+    $(".errors").html("");
+    if ($("#form_email").val() == "") {
+        $(".errors").append("Email con't be blank");
+        return false;
+    }
+    if ($("#form_message").val() == "") {
+        $(".errors").append("Message con't be blank");
+        return false;
+    }
+    $.ajax({
+           type: "POST",
+           url: '/home/send_data',
+           data: $("#contact-form").serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+               console.log(data)
+           }
+         });
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+});    
+
+</script>
+
+<style type="text/css">
+    .errors{
+        color: red;
+        margin: 10px;
+    }
+
+</style>
